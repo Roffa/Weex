@@ -38,8 +38,7 @@ export default {
                     url: native,
                     animated: 'true'
                 }) 
-                console.log('========='+native)
-                this.$router.push(path) // 使用vue-router
+                
             }
 
         },
@@ -48,9 +47,10 @@ export default {
             if (WXEnvironment.platform === 'Web') {
                 window.history.back()
             } else {
-                weex.requireModule('navigator').pop({
-                    animated: 'true'
-                })  
+                this.$router.go(-1)
+                // weex.requireModule('navigator').pop({
+                //     animated: 'true'
+                // })  
             }
         },
         jump(to) {

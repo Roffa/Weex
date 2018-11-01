@@ -276,7 +276,7 @@
                             }
 
                             me.logo = me.baseUrl + me.getResult.logo;
-                            console.log('========='+ me.logo)
+                            //console.log('========='+ me.logo)
                             me.romeName = me.getResult.comCName;
                             me.department = me.getResult.department;
                             me.duty = me.getResult.professionalTitle;

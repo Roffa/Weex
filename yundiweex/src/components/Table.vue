@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="table-row" :class="[i < 1 ? 'table-top' : '' ]" v-for="(row,i) in rows">
-            <div class="table-column" :class="[j < 1 ? 'table-left' : '' ]" v-for="(column, j) in columns">
+            <div class="table-column" :class="[j < 1 ? 'table-left' : ('table-row'+j) ]" v-for="(column, j) in columns">
                 <text class='tlt' :class="[i < 1 ? 'text-header' : '' ]">{{row[j]}}</text>
             </div>
         </div>
@@ -23,9 +23,10 @@
         border-left-width: 2px;
         border-left-style: solid;
         border-left-color: #ccc;
+        flex:4.5;
     }
     .table-column{
-        flex:1;
+        flex:3;
         justify-content: center;
         align-items:center;
         border-bottom-width: 2px;
@@ -35,10 +36,12 @@
         border-right-style: solid;
         border-right-color: #ccc;
     }
-
+    .table-row1{
+        flex:2;
+    }
     .tlt{
         text-align: center;
-        font-size: 38px;
+        font-size: 32px;
         margin-bottom: 6px;
         color:#333;
         
