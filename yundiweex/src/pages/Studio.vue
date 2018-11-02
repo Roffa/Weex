@@ -505,9 +505,16 @@
                 })
             }, 
             downloadAppClicked (){  //下载APP
-                console.log('leellllll')
-                var downloadUrl = this.downloadAppUrl;
-                window.open( downloadUrl,"_self");
+                if (this.downloadAppUrl.length > 0) {
+                    var downloadUrl = this.downloadAppUrl;
+                    window.open( downloadUrl,"_self");
+                }else{
+                    weex.requireModule('modal').toast({
+                                  message: '下载链接异常',
+                                  duration: 1.8
+                              })
+                }
+                
             }
         },
     }

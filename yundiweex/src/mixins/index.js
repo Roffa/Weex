@@ -3,7 +3,6 @@ export default {
     data () {  //公共数据
         return {
             scbaseUrl: '',
-            
             requestType: 'json',  //支持跨域
         } 
     },
@@ -97,6 +96,7 @@ export default {
                 console.log('=====进度'+JSON.stringify(progress))
             })
         },
+        
         /*
         * @brief  post请求
         * @param api  接口名
@@ -139,5 +139,24 @@ export default {
             }
             return param.substring(1)
         },
+        saveItem(key, value){  //存储数据
+            const storage = weex.requireModule('storage')
+            storage.setItem('name', 'Hanks', event => {
+                console.log('zrf debug: set success')
+            })
+        },
+        getItemForKey(key,result){  //获取数据
+            const storage = weex.requireModule('storage')
+            storage.getItem('name', event => {
+                console.log('zrf debug: get value:', event.data)
+                result(event.data)
+            })
+        },
+        removeIntemForKey(key){
+            const storage = weex.requireModule('storage')
+            storage.removeItem('name', event => {
+                console.log('zrf debug:delete value:', event.data)
+            })
+        }
     }
 }

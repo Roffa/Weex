@@ -63,6 +63,7 @@
         report:{
             title: '血糖报告小结',
             desc: '',
+            rid: '',   //报告id
         },
         arrayRows:[
             ["日期和时间", "测量时段", "血糖(mmol/l)"],
@@ -77,9 +78,36 @@
     },
     created () {
         this.scbaseUrl = '/api'  //配置支持跨域环境下调试
+
+        const notif = new BroadcastChannel('updateReportNotif')
+        notif.onmessage = function(event){  //接受到列表传值
+           console.log('页面传值中:', event.data)
+           report.rid = event.data
+        }
+
+        console.log('调用了created')
         this.getGlucoseReport()
         
     },
+    compiled (){
+      console.log('调用了compiled')
+    },
+    ready (){
+      console.log('调用了ready')
+    },
+    attached (){
+      console.log('调用了attached')
+    },
+    detached (){
+      console.log('调用了detached')
+    },
+    beforeDestroy (){
+      console.log('调用了beforeDestroy')
+    },
+    destroyed (){
+      console.log('调用了destroyed')
+    },
+
     methods: {
         getGlucoseReport(){  //血糖报告
             let me = this;
@@ -89,14 +117,15 @@
                
                     me.userId =  me.GetQueryString('userId');   //'4028808462900e0a0162a314a5880116'
                     me.baseUrl = document.location.protocol + '//' + window.location.host;
-                    me.scbaseUrl = me.baseUrl
+                    // me.scbaseUrl = me.baseUrl
+                    me.scUserId = me.userId;
                     
-                    // me.userId =  '8a100f1858294f5a01582d352b9d0003'
+                    me.userId =  '4028808462900e0a0162a314a5880116'//'8a100f1858294f5a01582d352b9d0003'
 
-                    me.chartUrl = me.scbaseUrl + '/glucose/toBloodGlucoseReportPhone.mv' + '?' + 'userId=' + me.userId
+                    me.chartUrl = me.scbaseUrl + '/glucose/toBloodGlucoseReportPhone.mv' + '?' + 'userId=' + me.userId + '&reportId=' + me.report.rid
            
                     me.hasReport = '2'
-                    // me.getGlucoseReportRequest()
+                    //me.getGlucoseReportRequest()
                        
                 }else  { 
                   this.webStyle = {'height': 300 + 'wx','background-color': 'white',}  //单位使用wx,处理各个机型高度不改变
@@ -105,7 +134,8 @@
                       me.scbaseUrl = ret.baseUrl,
                       me.baseUrl = ret.baseUrl,
                       me.userId = ret.userId;
-                      me.chartUrl = me.scbaseUrl + '/glucose/toBloodGlucoseReportPhone.mv' + '?' + 'userId=' + me.userId
+                      me.chartUrl = me.scbaseUrl + '/glucose/toBloodGlucoseReportPhone.mv' + '?' + 'userId=' + me.userId + '&reportId=' + me.report.rid
+                      me.scUserId = me.userId;
                       me.getGlucoseReportRequest()
                 })
               }
@@ -115,7 +145,7 @@
             var me = this;
             var stream = weex.requireModule('stream');
                 
-            var apiName =  '/glucose/getBgReportApp.mv' + '?' + 'userId=' + me.userId  //
+            var apiName =  '/glucose/getBgReportApp.mv' + '?' + 'userId=' + me.userId + '&reportId=' + me.report.rid  //
             me.hasReport = '0'
 
             
@@ -206,7 +236,7 @@
               }) 
       },
       onOpenGlucoseList() {  //进入血糖报告列表
-          this.jump('Glist') 
+          this.$router.push({name:'list', params:{userId: this.userId, url:this.scbaseUrl}}) 
       }
     },
   }
